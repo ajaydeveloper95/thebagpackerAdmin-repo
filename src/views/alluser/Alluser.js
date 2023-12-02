@@ -124,12 +124,6 @@ function Alluser() {
           itemsPerPageSelect
           itemsPerPage={5}
           pagination
-          onFilteredItemsChange={(items) => {
-            console.log(items)
-          }}
-          onSelectedItemsChange={(items) => {
-            console.log(items)
-          }}
           scopedColumns={{
             Status: (item) => (
               <td>

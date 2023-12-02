@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 import {
   CButton,
   CCard,
@@ -43,25 +44,37 @@ const Register = () => {
 
   const onSubmitSignUp = () => {
     setError(ErrorValidatorSignUp(formSingup))
-    if (Object.keys(error).length === 0 && isSubmit) {
+    if (Object.keys(error).length === 0 && isSubmit && Object.keys(formSingup).length !== 0) {
       let mainD = formSingup
       delete mainD.cPassword
       // api calling
       axios
         .post(`${AdminRoute}signup`, mainD, AuthHeader)
         .then((result) => {
+          toast.success('Wait ! Just Login')
           let authVal = result.data.data.authToken
           window.localStorage.setItem('authToken', authVal)
-          navigate('/dashboard')
+          setTimeout(() => {
+            navigate('/dashboard')
+          }, 3000)
         })
         .catch((err) => {
-          console.log('some issue on data send ')
+          if (err.response.status === 500) {
+            toast.error('Something Went wrong !')
+          } else if (err.response.status === 401) {
+            toast.error('Check your Secure Key !')
+          } else {
+            toast.error('Some Issue Just Wait a Sec!')
+          }
         })
+    }else{
+        toast.error('Enter required Field')
     }
   }
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>

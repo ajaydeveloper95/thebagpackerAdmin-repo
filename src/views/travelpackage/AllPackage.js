@@ -10,7 +10,7 @@ import {
   CModalBody,
   CModalFooter,
 } from '@coreui/react-pro'
-
+import { ToastContainer, toast } from 'react-toastify'
 import {
   CButton,
   CFormInput,
@@ -22,7 +22,7 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { AdminRoute, AuthHeader } from 'src/ServerRoute/ServerRouteExport'
- 
+
 function AllPackage() {
   const [details, setDetails] = useState([])
   const [getUpdateVisible, setUpdateVisible] = useState(false)
@@ -57,7 +57,7 @@ function AllPackage() {
         setData(StoreData)
       })
       .catch((err) => {
-        console.log('some issue fix ', err)
+          toast.error('Some on Data fetch refresh !')
       })
   }, [getDeleteVisible, getUpdateVisible])
 
@@ -106,10 +106,16 @@ function AllPackage() {
     axios
       .post(`${AdminRoute}updatePackage`, data, AuthHeader)
       .then((result) => {
-        console.log('success')
+        toast.success('Update Package Successfully')
       })
       .catch((err) => {
-        console.log('some issue on data send ')
+        if (err.response.status === 500) {
+          toast.error('Something Went wrong !')
+        } else if (err.response.status === 401) {
+          toast.error('Check your Secure Key !')
+        } else {
+          toast.error('Some Issue Just Wait a Sec!')
+        }
       })
     setUpdateVisible(false)
   }
@@ -119,10 +125,16 @@ function AllPackage() {
     axios
       .post(`${AdminRoute}/deletePackage`, { _id: deleteElementId }, AuthHeader)
       .then((result) => {
-        console.log('success')
+        toast.success('Package Delete Successfully')
       })
       .catch((err) => {
-        console.log('Not Delete Success', err)
+        if (err.response.status === 500) {
+          toast.error('Something Went wrong !')
+        } else if (err.response.status === 401) {
+          toast.error('Check your Secure Key !')
+        } else {
+          toast.error('Some Issue Just Wait a Sec!')
+        }
       })
     setDeleteVisible(false)
   }
@@ -181,6 +193,7 @@ function AllPackage() {
   }
   return (
     <div>
+      <ToastContainer />
       <div className="bg-white p-3 mb-3 rounded">
         <div>
           <h3>All Package</h3>

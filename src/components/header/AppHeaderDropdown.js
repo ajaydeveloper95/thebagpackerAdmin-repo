@@ -1,5 +1,6 @@
 import React from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 import {
   CAvatar,
   CDropdown,
@@ -9,22 +10,23 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import {
-  cilLockLocked,
-  cilUser,
-} from '@coreui/icons'
+import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const LogOutHandle = () => {
+    toast.success('Logout successfully just wait !')
     window.localStorage.removeItem('authToken')
-    navigate("/login");
+    setTimeout(() => {
+      navigate('/login')
+    }, 3000)
   }
   return (
     <CDropdown variant="nav-item">
+      <ToastContainer />
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>

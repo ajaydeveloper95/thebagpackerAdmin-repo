@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 import {
   CButton,
   CCard,
@@ -21,7 +22,7 @@ import axios from 'axios'
 import { AdminRoute, AuthHeader } from 'src/ServerRoute/ServerRouteExport'
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({})
   const [error, setError] = useState({})
   const [isSubmit, setIsSubmit] = useState(false)
@@ -40,23 +41,34 @@ const Login = () => {
 
   const onSubmitHandleLogin = () => {
     setError(ErrorValidatorLogIn(formData))
-    if (Object.keys(error).length === 0 && isSubmit) {
+    if (Object.keys(error).length === 0 && isSubmit && Object.keys(formData).length !== 0) {
       axios
         .post(`${AdminRoute}login`, formData, AuthHeader)
         .then((result) => {
+          toast.success('Wait ! Just Login')
           window.localStorage.setItem('authToken', result.data.authToken)
-          navigate("/dashboard");
+          setTimeout(() => {
+            navigate('/dashboard')
+          }, 3000)
         })
         .catch((err) => {
-          console.log('some issue on data send ')
+          if (err.response.status === 500) {
+            toast.error('Something Went wrong !')
+          } else if (err.response.status === 401) {
+            toast.error('Check input info!')
+          } else {
+            toast.error('Some Issue Just Wait a Sec!')
+          }
         })
+    } else {
+      toast.error('Enter required Field')
     }
   }
 
-  console.log(error)
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <ToastContainer />
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>

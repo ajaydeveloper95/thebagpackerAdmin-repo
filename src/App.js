@@ -1,6 +1,7 @@
-import React, { Component, Suspense, useEffect } from 'react'
+import React, { Component, Suspense } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 const loading = (
   <div className="pt-3 text-center">

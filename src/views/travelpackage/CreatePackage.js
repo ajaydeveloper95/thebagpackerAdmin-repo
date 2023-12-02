@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AdminRoute, AuthHeader } from '../../ServerRoute/ServerRouteExport'
 import { ErrorValidator } from '../../ServerRoute/FormValidator'
+import { ToastContainer, toast } from 'react-toastify'
 import {
   CFormInput,
   CForm,
@@ -29,7 +30,6 @@ function CreatePackage() {
   useEffect(() => {
     if (Object.keys(error).length === 0) {
       setIsSubmit(true)
-      console.log('inside the if')
     }
   }, [error])
 
@@ -37,20 +37,29 @@ function CreatePackage() {
     event.preventDefault()
     setError(ErrorValidator(getDataPackage))
     // call the axios api if condition true
-    if (Object.keys(error).length === 0 && isSubmit) {
+    if (Object.keys(error).length === 0 && isSubmit && Object.keys(getDataPackage).length !== 0) {
       axios
         .post(`${AdminRoute}addPackage`, getDataPackage, AuthHeader)
         .then((result) => {
-          console.log('success')
+          toast.success('Package Add Successfully')
         })
         .catch((err) => {
-          console.log('some issue on data send ')
+          if (err.response.status === 500) {
+            toast.error('Something Went wrong !')
+          } else if (err.response.status === 401) {
+            toast.error('Check your Secure Key !')
+          } else {
+            toast.error('Some Issue Just Wait a Sec!')
+          }
         })
+    } else {
+      toast.error('Enter required Field')
     }
   }
 
   return (
     <div className="bg-white p-3 mb-3 rounded">
+      <ToastContainer />
       <div>
         <h3>Create Package</h3>
       </div>

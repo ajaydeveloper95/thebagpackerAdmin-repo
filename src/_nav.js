@@ -7,7 +7,7 @@ import {
   cilSpeedometer,
   cilExcerpt
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
   {

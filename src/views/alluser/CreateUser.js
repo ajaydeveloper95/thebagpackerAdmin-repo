@@ -7,13 +7,11 @@ function CreateUser() {
   useEffect(() => {}, [getFormData])
 
   const onChangeFn = (event) => {
-    // console.log(event.target.name)
     setFormData((value) => ({ ...value, [event.target.name]: event.target.value }))
   }
-  console.log(getFormData)
 
   const handleOnSubmit = ()=>{
-    console.log("comming soon !")
+    let v = "t"
   }
   return (
     <div className="bg-white p-3 mb-3 rounded">
