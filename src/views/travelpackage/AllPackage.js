@@ -34,7 +34,7 @@ function AllPackage() {
   useEffect(() => {
     // call the api and save the data
     axios
-      .get(`${AdminRoute}/`, AuthHeader)
+      .get(`${AdminRoute}/`)
       .then((result) => {
         let content = result.data.data
         setMainData(content)
@@ -57,7 +57,7 @@ function AllPackage() {
         setData(StoreData)
       })
       .catch((err) => {
-          toast.error('Some on Data fetch refresh !')
+        toast.error('Some on Data fetch refresh !')
       })
   }, [getDeleteVisible, getUpdateVisible])
 
